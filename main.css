@@ -2,26 +2,9 @@ table{
 	position: relative;
 	font-size: 0;
 	margin:auto;
-    width: 500px;
-    height: 500px;
 	padding: 0;
     border: 3px blue outset;
     background-color: blue;
-}
-.subgrid{
-	margin:0;
-    padding:0;
-    outline:1px solid blue;
-    display:inline-block;
-    border-radius: 50%;
-    background-color: white;
-    cursor: pointer;
-}
-.player1{
-    background-color: red;
-}
-.player2{
-    background-color: yellow;
 }
 td{
     margin:0;
@@ -30,4 +13,6 @@ td{
     border-radius: 50%;
     background-color: white;
     cursor: pointer;
+    width: 75px;
+    height: 75px;
 }
