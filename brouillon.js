@@ -242,3 +242,120 @@ $(document).ready(function(){
   createGrid2(7, 6);
   play();
 });
+
+for (row = len; row > -1; row--) {
+  $('#pion').hide();
+  $('.played').removeClass('played');
+  if (array[row][column] == 0) {
+    $(`#${row}-${column}`).addClass('played');
+    if(turn%2 == 1){
+      array[row][column] = 1;
+      $('#tours').text('Tour de : '+settings.player2);
+      //$('#tours').css('color', settings.colorp2);
+      $('table').prepend('<div id="pion">');
+      if(column == 2){
+        $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'161px'});
+        $('#pion').animate({'top':parseInt($('table').height())-parseInt($('#pion').height())+3+'px'});
+
+      }
+      if(column == 1){
+        $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'86px'});
+        $('#pion').animate({'top':parseInt($('table').height())-(parseInt($('#pion').height())*2)+3+'px'});
+      }
+      $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute'});
+      $('#pion').animate({'top':parseInt($('table').height())-parseInt($('#pion').height())+3+'px'});
+      setInterval(function(){$(`#${row}-${column}`).css({'background-color': settings.colorp1})}, 400);
+      console.log(parseInt($('table').height())-(parseInt($('#pion').height())*2)+3+'px');
+    }
+    if(turn%2 == 0){
+      array[row][column] = 2;
+      $(`#${row}-${column}`).css('background-color', settings.colorp2);
+      $('#tours').text('Tour de : '+settings.player1);
+      //$('#tours').css({'color': settings.colorp1});
+    }
+    break;
+  }
+}
+
+for (row = len; row > -1; row--) {
+  $('.played').removeClass('played');
+  if (array[row][column] == 0) {
+    $(`#${row}-${column}`).addClass('played');
+    if(turn%2 == 1){
+      array[row][column] = 1;
+      $(`#${row}-${column}`).css({'background-color': settings.colorp1});
+      $('#tours').text('Tour de : '+settings.player2);
+      //$('#tours').css('color', settings.colorp2);
+      
+    }
+    if(turn%2 == 0){
+      array[row][column] = 2;
+      $(`#${row}-${column}`).css('background-color', settings.colorp2);
+      $('#tours').text('Tour de : '+settings.player1);
+      //$('#tours').css({'color': settings.colorp1});
+    }
+    break;
+  }
+}
+column = 0;
+let left;
+switch(column){
+  case 0 : 
+  left = 7;
+  break;
+  case 1 : 
+  left =+ 2;
+  break;
+  case 2: 
+  left =+ 2;
+
+}
+let numPion = 0;
+let pxSup = 1;
+let left =5;
+for (row = len; row > -1; row--) {
+  numPion += 1;
+  pxSup += 2;
+  for(column = 0; column <= maxCol; column++){
+    left += 2;
+  }
+}
+
+if(column == 0 && row == 5){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*1)+3+'px'},250);
+  //$('#pion').remove();
+}
+if(column == 0 && row == 4){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*2)+1+'px'});
+}
+if(column == 0 && row == 3){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*3)-1+'px'});
+}
+if(column == 0 && row == 2){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*4)-3+'px'});
+}
+if(column == 0 && row == 1){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*5)-5+'px'});
+}
+if(column == 0 && row == 0){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'7px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*6)-7+'px'});
+}
+if(column == 1 && row == 4){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':$(`#${row}-${column}`).width()+9+'px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-(parseInt($(`#${row}-${column}`).height())*2)+1+'px'});
+  //$(`#${row}-${column}`).remove();
+}
+if(column == 2 && row == 5){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':($(`#${row}-${column}`).width()*2)+11+'px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-parseInt($(`#${row}-${column}`).height()*1)+3+'px'}); 
+}
+if(column == 3 && row == 5){
+  $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':($(`#${row}-${column}`).width()*3)+13+'px'});
+  $(`#${row}-${column}`).animate({'top':parseInt($('table').height())-parseInt($(`#${row}-${column}`).height()*1)+3+'px'}); 
+}
