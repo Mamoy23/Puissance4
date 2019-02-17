@@ -22,52 +22,51 @@
         }
         $('body').prepend('<div>');
         $('div').attr('id', 'grid');
-        $("#grid").append('<table>');
+        $("#grid").append('<table id="table">');
 
         for (let rows = 0; rows < y; rows++) {
           array[rows] = [];
-          //let tr = document.createElement('tr');
-          $('table').append('<tr>');
+          $('#table').append('<tr>');
           for (let columns = 0; columns < x; columns++) {
-            //let td = document.createElement('td');
             $('tr:last').append('<td>');
-            //$('td').attr('id', rows+'-'+columns)
-            // td.setAttribute('id', rows+'-'+columns);
-            // tr.append(td);
             array[rows][columns] = 0;
           }
-          //$('table').append(tr); 
         }
+      };
 
+      function styleSheet(){
         $('body').prepend('<div id="bar">');
+        $('body').prepend('<audio id="song">');
+        $('audio').append('<source src="you-win-sound-effect-5.mp3" type="audio/mpeg">');
         $('body').css({
           'font-size': '25px',
           'font-family': '"Indie Flower", cursive',
           'color':'#444444'
         });
         $('#bar').css({
-          'color':'grey', 
           'display':'flex',
           'justify-content':'center',
+          'align-items':'center',
         });
-        $('table').css({
+        $('#table').css({
           'position': 'relative',
           'font-size': 0,
           'margin':'auto',
           'padding': '5px',
-          'background-color': 'grey',
+          'background-color': '#444444',
           'border-collapse': 'collapse',
-          'outline': '5px solid grey'
+          'outline': '5px solid #444444',
+          'opacity':0.9
         });
         $('td').css({
           'margin':0,
           'padding':0,
           'border-radius': '50%',
-          'outline': '1px solid grey',
+          'outline': '1px solid #444444',
           'background-color': 'white',
           'cursor': 'pointer',
           'width': '75px',
-          'height': '75px'
+          'height': '75px',
         });
         $('#bar').append('<p>');
         $('p').attr('id', 'tours');
@@ -77,17 +76,49 @@
         $('button').css({
           'background-color':'transparent',
           'cursor':'pointer',
-          'margin':'10px',
+          'margin':'25px 10px',
           'border':'none',
-          'border':'1px solid grey',
-          'border-radius':'5px',
+          'border':'1px solid #444444',
+          'border-radius':'50%',
           'padding':'10px',
-          'color':'grey'
+          'color':'#444444'
         });
-        $('#cancel').text('Annuler le dernier coup');
+        $('#cancel').append('<i class="fas fa-undo"></i>');
+        $('#cancel').attr('title', 'Annuler le dernier coup');
+        $('#cancel').mouseover(function(){
+          $('#cancel').css({
+              'background-color':'#d63737cf',
+              'color':'white'
+            });
+        });
+        $('#cancel').mouseleave(function(){
+            $('#cancel').css({
+                'background-color':'#fcfcfc',
+                'color':'#444444'
+              });
+        });
         $('#cancel').hide();
-        $('#bar').append('<p id="scorep1">' + '<p id="scorep2">');
-        $('#scorep1, #scorep2').css({'padding': '3px'});
+        $('#grid').append('<table id="score">');
+        $('#score').append('<caption>');
+        $('#score').css({
+          'margin':'auto',
+          'text-align':'center',
+          'border-spacing':'20px 2px',
+          'border':'1px solid #444444',
+          'background-color':'rgba(12, 140, 12, 0.44)',
+          'border-radius': '4%'
+        });
+        $('caption').text('Victoires');
+        $('caption').css({'margin-top': '35px', 'font-size':'30px'});
+        $('#score').append('<tr>'+'<tr>');
+        $('#score tr:first').append('<td id="player1">' + '<td id="player2">');
+        $('#player1').text(settings.player1);
+        $('#player2').text(settings.player2);
+        $('#player1, #player2').css({'padding-top':'15px'});
+        $('#score tr:last').append('<td id="scorep1">' + '<td id="scorep2">');
+        $('#scorep1, #scorep2').css({'font-size': '40px'});
+        $('#scorep1').text(scorep1);
+        $('#scorep2').text(scorep2);
       };
       
       function play(){
@@ -97,58 +128,78 @@
           let len = array.length - 1;
           let row;
           turn += 1;
+
           for (row = len; row > -1; row--) {
             $('.played').removeClass('played');
             if (array[row][column] == 0) {
-              $('table').append('<div id="'+row+'-'+column+'" class="pion">');
-              $(`#${row}-${column}`).css({'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'top': 0});
+              $('#table').append('<div id="'+row+'-'+column+'" class="pion">');
+              $(`#${row}-${column}`).css({
+                'width': '75px',
+                'height':'75px',
+                'border-radius': '50%',
+                'position':'absolute',
+                'top': 0,
+              });
               $(`#${row}-${column}`).addClass('played');
               if(turn%2 == 1){
-                $(`#${row}-${column}`).css({'background-color': settings.colorp1, 'left':($(`#${row}-${column}`).width()*column)+'px'});
-                $(`#${row}-${column}`).animate({'top': $(`#${row}-${column}`).height()*row+'px'}, 300);
+                // $('#table tr:first td').mouseover(function(){
+                //   $(this).css({
+                //       'background-color':settings.colorp2,
+                //     });
+                // });
+                // $('#table tr:first td').mouseleave(function(){
+                //     $(this).css({
+                //         'background-color':'white',
+                //       });
+                // });
+                $(`#${row}-${column}`).css({
+                  'background-color': settings.colorp1,
+                  'left':($(`#${row}-${column}`).width()*column)+'px'
+                });
+                $(`#${row}-${column}`).animate({
+                  'top': ($(`#${row}-${column}`).height()*row)+'px'
+                }, 250);
                 array[row][column] = 1;
-                $('#tours').text('Au tour de : '+settings.player2);
-                //$('#tours').css('color', settings.colorp2);
-                
+                $('#tours').text('Au tour de '+settings.player2);
               }
               if(turn%2 == 0){
-                $(`#${row}-${column}`).css({'background-color': settings.colorp2, 'left':($(`#${row}-${column}`).width()*column)+'px'});
-                $(`#${row}-${column}`).animate({'top': $(`#${row}-${column}`).height()*row+'px'}, 300);
+                // $('#table tr:first td').mouseover(function(){
+                //   $(this).css({
+                //       'background-color':settings.colorp1,
+                //     });
+                // });
+                // $('#table tr:first td').mouseleave(function(){
+                //     $(this).css({
+                //         'background-color':'white',
+                //       });
+                // });
+                $(`#${row}-${column}`).css({
+                  'background-color': settings.colorp2,
+                  'left':($(`#${row}-${column}`).width()*column)+'px'
+                });
+                $(`#${row}-${column}`).animate({
+                  'top': ($(`#${row}-${column}`).height()*row)+'px'
+                }, 250);
                 array[row][column] = 2;
-                $('#tours').text('Au tour de : '+settings.player1);
-                //$('#tours').css({'color': settings.colorp1});
+                $('#tours').text('Au tour de '+settings.player1);
               }
               break;
             }
           }
-
-        //   if(column == 2){
-        //     $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'161px'});
-        //     $('#pion').animate({'top':parseInt($('table').height())-parseInt($('#pion').height())+3+'px'});
-    
-        //   }
-        //   if(column == 1){
-        //     $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute', 'left':'86px'});
-        //     $('#pion').animate({'top':parseInt($('table').height())-(parseInt($('#pion').height())*2)+3+'px'});
-        //   }
-        //   $('#pion').css({'background-color': settings.colorp1, 'width': '75px', 'height':'75px', 'border-radius': '50%', 'position':'absolute'});
-        //   $('#pion').animate({'top':parseInt($('table').height())-parseInt($('#pion').height())+3+'px'});
-        //   setInterval(function(){$(`#${row}-${column}`).css({'background-color': settings.colorp1})}, 400);
-        //   console.log(parseInt($('table').height())-(parseInt($('#pion').height())*2)+3+'px');
-        // }
               
           $('#cancel').click(function(){
             if($(`#${row}-${column}`).hasClass('played')){
-              $('#tours').text('Tour de : '+settings['player' + array[row][column]]);
+              $('#tours').text('Au tour de '+settings['player' + array[row][column]]);
               turn--;
               array[row][column] = 0;
-              //$(`#${row}-${column}`).css('background-color', 'white');
               $(`#${row}-${column}`).remove();
+              $('#cancel').hide();
             }
           });
+
           setTimeout(function(){
             checkWin(array, row, column);
-          }, 310);
+          }, 300);
         });
       };
         
@@ -185,8 +236,7 @@
         //BAS GAUCHE VERS HAUT DROIT OK
         for (i=3; i<maxRow; i++){
           for (j=0; j<maxCol-3; j++){
-            if (array[i][j] == player && array[i-1][j+1] == player && array[i-2][j+2] == player && array[i-3][j+3] == player){
-              console.log('bas gauche');   
+            if (array[i][j] == player && array[i-1][j+1] == player && array[i-2][j+2] == player && array[i-3][j+3] == player){  
               resetGrid(player, 1);
             }
           }
@@ -195,30 +245,26 @@
         for (i=3; i<maxRow; i++){
           for (j=3; j<maxCol; j++){
             if (array[i][j] == player && array[i-1][j-1] == player && array[i-2][j-2] == player && array[i-3][j-3] == player){
-              console.log('bas droit');
               resetGrid(player, 1);
             }
           }
         }
 
-        let $null = 1;
+        let _null = 1;
         $.each(array, function(row, column){
           $.each(column, function(key, value){
             if(column[key] == 0){
-              $null = 0;
+              _null = 0;
             }
           });
         });
-        if($null == 1){
+        if(_null == 1){
           alert('Partie nulle');
           resetGrid(player, 0);
         }
       };
       
       function resetGrid(player, isWin){
-        //$('td').css('background-color', 'white');
-        //$('.pion').remove();
-        //$('.pion').parentNode.removeChild('.pion');
         $.each(array, function(row, column){
           $.each(column, function(key, value){
             column[key]= 0;
@@ -227,36 +273,35 @@
         if(isWin == 1){
           if(player == 1){
             scorep1++;
-            $('#scorep1').text('Score de '+settings.player1+': '+scorep1);
+            $('#scorep1').text(scorep1);
+            $('#tours').text(settings.player2+' commence');
           }
           if(player == 2){
             scorep2++;
-            $('#scorep2').text('Score de '+settings.player2+': '+scorep2);
+            $('#scorep2').text(scorep2);
+            $('#tours').text(settings.player1+' commence');
           }
+          $('#song')[0].play().catch(function(){
+          });
           alert(settings['player' + player] +" a gagné");
         }
+        else{
+          if(player == 1){
+            $('#tours').text(settings.player2+' commence');
+          }
+          if(player == 2){
+            $('#tours').text(settings.player1+' commence');
+          }
+        }
         $('div.pion').remove();
+        $('#cancel').hide();
       };
-
-      // function checkNull(player){
-      //   let $null = 1;
-      //   $.each(array, function(row, column){
-      //     $.each(column, function(key, value){
-      //       if(column[key] == 0){
-      //         $null =0;
-      //       }
-      //     });
-      //   });
-      //   if($null == 1){
-      //     alert('Partie nulle');
-      //     resetGrid(player);
-      //   }
-      // }
 
   $(document).ready(function(){
     createGrid(settings.x, settings.y);
+    styleSheet();
     play();
   });
 };
 }(jQuery));
-$('body').power4({x: 6, y: 6, player1 : "Marine", player2: 'Lauriane', colorp1: 'purple', colorp2: 'pink'});
+$('body').power4({x: 6, y: 6, player1 : "Ismaiiil", player2: 'Nicolas', colorp1: "green", colorp2: "blue"});
