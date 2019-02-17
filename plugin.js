@@ -87,15 +87,15 @@
         $('#cancel').attr('title', 'Annuler le dernier coup');
         $('#cancel').mouseover(function(){
           $('#cancel').css({
-              'background-color':'#d63737cf',
-              'color':'white'
-            });
+            'background-color':'#d63737cf',
+            'color':'white'
+          });
         });
         $('#cancel').mouseleave(function(){
             $('#cancel').css({
-                'background-color':'#fcfcfc',
-                'color':'#444444'
-              });
+              'background-color':'#fcfcfc',
+              'color':'#444444'
+            });
         });
         $('#cancel').hide();
         $('#grid').append('<table id="score">');
@@ -119,6 +119,16 @@
         $('#scorep1, #scorep2').css({'font-size': '40px'});
         $('#scorep1').text(scorep1);
         $('#scorep2').text(scorep2);
+        $('#table td').mouseover(function(){
+          $(this).css({
+            'background-color':settings.colorp1
+          });
+        });
+        $('#table td').mouseleave(function(){
+            $(this).css({
+              'background-color':'white'
+            });
+        });
       };
       
       function play(){
@@ -131,7 +141,6 @@
           let len = array.length - 1;
           let row;
           turn += 1;
-
           for (row = len; row > -1; row--) {
             $('.played').removeClass('played');
             if (array[row][column] == 0) {
@@ -141,22 +150,17 @@
                 'height':'75px',
                 'border-radius': '50%',
                 'position':'absolute',
-                'top': 0,
               });
               $(`#${row}-${column}`).addClass('played');
               if(turn%2 == 1){
-                $('#table tr:first td').mouseover(function(){
+                $('#table td').mouseover(function(){
                   $(this).css({
                       'background-color':settings.colorp2,
                     });
                 });
-                $('#table tr:first td').mouseleave(function(){
-                    $(this).css({
-                        'background-color':'white',
-                      });
-                });
                 $(`#${row}-${column}`).css({
                   'background-color': settings.colorp1,
+                  'top': ($(`#${row}-${column}`).height()*$(this).parent().index())+'px',
                   'left':($(`#${row}-${column}`).width()*column)+'px'
                 });
                 $(`#${row}-${column}`).animate({
@@ -166,18 +170,14 @@
                 $('#tours').text('Au tour de '+settings.player2);
               }
               if(turn%2 == 0){
-                $('#table tr:first td').mouseover(function(){
+                $('#table td').mouseover(function(){
                   $(this).css({
                       'background-color':settings.colorp1,
                     });
                 });
-                $('#table tr:first td').mouseleave(function(){
-                    $(this).css({
-                        'background-color':'white',
-                      });
-                });
                 $(`#${row}-${column}`).css({
                   'background-color': settings.colorp2,
+                  'top': ($(`#${row}-${column}`).height()*$(this).parent().index())+'px',
                   'left':($(`#${row}-${column}`).width()*column)+'px'
                 });
                 $(`#${row}-${column}`).animate({
@@ -192,17 +192,23 @@
               
           $('#cancel').click(function(){
             if($(`#${row}-${column}`).hasClass('played')){
-              $('#tours').text('Au tour de '+settings['player' + array[row][column]]);
+              $('#tours').text('Au tour de '+settings['player' +array[row][column]]);
               turn--;
-              array[row][column] = 0;
               $(`#${row}-${column}`).remove();
               $('#cancel').hide();
+              let resetColor = settings['colorp'+array[row][column]];
+              $('#table td').mouseover(function(){
+                $(this).css({
+                  'background-color':resetColor,
+                });
+              });
+              array[row][column] = 0;
             }
           });
 
           setTimeout(function(){
             checkWin(array, row, column);
-          }, 300);
+          }, 270);
         });
       };
         
@@ -283,8 +289,7 @@
             $('#scorep2').text(scorep2);
             $('#tours').text(settings.player1+' commence');
           }
-          $('#song')[0].play().catch(function(){
-          });
+          $('#song')[0].play().catch(function(){});
           alert(settings['player' + player] +" a gagné");
         }
         else{
@@ -306,4 +311,4 @@
   });
 };
 }(jQuery));
-$('body').power4({x: 6, y: 6, player1 : "Ismaiiil", player2: 'Nicolas', colorp1:'red', colorp2: 'yellow'});
+$('body').power4({x: 6, y: 6, player1 : "Ismaiiil", colorp1:'red', player2: 'Nicolas', colorp2: 'yellow'});
