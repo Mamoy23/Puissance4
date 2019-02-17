@@ -25,8 +25,8 @@
         $("#grid").append('<table id="table">');
 
         for (let rows = 0; rows < y; rows++) {
-          array[rows] = [];
           $('#table').append('<tr>');
+          array[rows] = [];
           for (let columns = 0; columns < x; columns++) {
             $('tr:last').append('<td>');
             array[rows][columns] = 0;
@@ -56,7 +56,7 @@
           'background-color': '#444444',
           'border-collapse': 'collapse',
           'outline': '5px solid #444444',
-          'opacity':0.9
+          'opacity':0.85
         });
         $('td').css({
           'margin':0,
@@ -124,6 +124,9 @@
       function play(){
         $("td").click(function(){
           $('#cancel').show();
+          $(this).css({
+            'background-color':'white',
+          });
           let column = $(this).index();
           let len = array.length - 1;
           let row;
@@ -142,16 +145,16 @@
               });
               $(`#${row}-${column}`).addClass('played');
               if(turn%2 == 1){
-                // $('#table tr:first td').mouseover(function(){
-                //   $(this).css({
-                //       'background-color':settings.colorp2,
-                //     });
-                // });
-                // $('#table tr:first td').mouseleave(function(){
-                //     $(this).css({
-                //         'background-color':'white',
-                //       });
-                // });
+                $('#table tr:first td').mouseover(function(){
+                  $(this).css({
+                      'background-color':settings.colorp2,
+                    });
+                });
+                $('#table tr:first td').mouseleave(function(){
+                    $(this).css({
+                        'background-color':'white',
+                      });
+                });
                 $(`#${row}-${column}`).css({
                   'background-color': settings.colorp1,
                   'left':($(`#${row}-${column}`).width()*column)+'px'
@@ -163,16 +166,16 @@
                 $('#tours').text('Au tour de '+settings.player2);
               }
               if(turn%2 == 0){
-                // $('#table tr:first td').mouseover(function(){
-                //   $(this).css({
-                //       'background-color':settings.colorp1,
-                //     });
-                // });
-                // $('#table tr:first td').mouseleave(function(){
-                //     $(this).css({
-                //         'background-color':'white',
-                //       });
-                // });
+                $('#table tr:first td').mouseover(function(){
+                  $(this).css({
+                      'background-color':settings.colorp1,
+                    });
+                });
+                $('#table tr:first td').mouseleave(function(){
+                    $(this).css({
+                        'background-color':'white',
+                      });
+                });
                 $(`#${row}-${column}`).css({
                   'background-color': settings.colorp2,
                   'left':($(`#${row}-${column}`).width()*column)+'px'
@@ -209,7 +212,6 @@
         let maxRow = array.length;
         let maxCol = array[row].length;
 
-        //CHECK HORIZONTAL
         for(i = 0; i <= maxCol; i++){
           if(array[row][i] == player){
             count++;
@@ -221,7 +223,7 @@
             count = 0;
           }
         }
-        //CHECK VERTICAL
+
         for(i = 0; i < maxRow; i++){
           if(array[i][column] == player){
             count++;
@@ -233,7 +235,7 @@
             count = 0;
           }
         }
-        //BAS GAUCHE VERS HAUT DROIT OK
+
         for (i=3; i<maxRow; i++){
           for (j=0; j<maxCol-3; j++){
             if (array[i][j] == player && array[i-1][j+1] == player && array[i-2][j+2] == player && array[i-3][j+3] == player){  
@@ -241,7 +243,7 @@
             }
           }
         }
-        //BAS DROIT VERS HAUT GAUCHE OK
+
         for (i=3; i<maxRow; i++){
           for (j=3; j<maxCol; j++){
             if (array[i][j] == player && array[i-1][j-1] == player && array[i-2][j-2] == player && array[i-3][j-3] == player){
@@ -304,4 +306,4 @@
   });
 };
 }(jQuery));
-$('body').power4({x: 6, y: 6, player1 : "Ismaiiil", player2: 'Nicolas', colorp1: "green", colorp2: "blue"});
+$('body').power4({x: 6, y: 6, player1 : "Ismaiiil", player2: 'Nicolas', colorp1:'red', colorp2: 'yellow'});
